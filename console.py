@@ -4,6 +4,7 @@
 
 
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import cmd
 
@@ -17,6 +18,10 @@ class HBNBCommand(cmd.Cmd):
         if obj:
             if obj == "BaseModel":
                 instance = BaseModel()
+                print(instance.id)
+                instance.save()
+            elif obj == "User":
+                instance = User()
                 print(instance.id)
                 instance.save()
         else:
