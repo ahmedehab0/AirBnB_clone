@@ -129,6 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found**")
             return
         setattr(instance[obj], argv[2], argv[3])
+        storage.save()
 
     def emptyline(self):
         """print empty line\n"""
