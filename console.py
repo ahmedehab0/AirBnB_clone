@@ -13,9 +13,10 @@ from models.review import Review
 from models import storage
 import cmd
 
+
 class HBNBCommand(cmd.Cmd):
     """command interpeter"""
-    
+
     prompt = '(hbnb) '
 
     def do_create(self, obj):
@@ -34,13 +35,13 @@ class HBNBCommand(cmd.Cmd):
 
         """creates a new instance of a class\n"""
         if obj:
-            obj_dict = {"BaseModel" : BaseModel,
-                        "User" : User,
-                        "State" : State,
-                        "Amenity" : Amenity,
-                        "Place" : Place,
-                        "Review" : Review,
-                        "City" : City}
+            obj_dict = {"BaseModel": BaseModel,
+                        "User": User,
+                        "State": State,
+                        "Amenity": Amenity,
+                        "Place": Place,
+                        "Review": Review,
+                        "City": City}
 
             for key, value in obj_dict.items():
                 if key == obj:
@@ -49,14 +50,15 @@ class HBNBCommand(cmd.Cmd):
                     print(instance.id)
                     instance.save()
                     return
-            
+
             print("** class doesn't exist **")
 
         else:
             print("** class name missing **")
-    
+
     def do_show(self, line):
-        """prints the string representation of an instance based on the class name and id\n"""
+        """prints the string representation of an instance based on
+        the class name and id\n"""
 
         classes = ["BaseModel", "User", "State", "Amenity", "Place", "Review"]
         instance = storage.all()
@@ -78,7 +80,8 @@ class HBNBCommand(cmd.Cmd):
         print("** no instance found **")
 
     def do_all(self, obj):
-        """prints all string representation of all instances based or not on a class name\n"""
+        """prints all string representation of all instances
+        based or not on a class name\n"""
 
         instances = storage.all()
         if not obj:
@@ -86,7 +89,8 @@ class HBNBCommand(cmd.Cmd):
                 print(values)
             return
         else:
-            classes = ["BaseModel", "User", "State", "Amenity", "Place", "Review"]
+            classes = ["BaseModel", "User", "State", "Amenity",
+                       "Place", "Review"]
             if obj not in classes:
                 print("** class doesn't exist **")
 
@@ -94,6 +98,7 @@ class HBNBCommand(cmd.Cmd):
                 model = keys.split(".")
                 if model[0] == obj:
                     print(values)
+
     def do_destroy(self, line):
         """destroys an instance based on name and id of the class\n"""
 
@@ -117,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """updates an instance based on the class name and id\n"""
-        
+
         classes = ["BaseModel", "User", "State", "Amenity", "Place", "Review"]
         instance = storage.all()
         if not line:
@@ -136,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
         elif argv[0] not in classes:
             print("class doesn't exist")
         obj = argv[0] + '.' + argv[1]
-        if not obj in instance.keys():
+        if obj not in instance.keys():
             print("** no instance found**")
             return
         setattr(instance[obj], argv[2], argv[3])
@@ -154,5 +159,7 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program\n"""
         return True
 
+
 if __name__ == '__main__':
+
     HBNBCommand().cmdloop()

@@ -1,6 +1,10 @@
+"""base module"""
+
+
 import datetime
 import uuid
 import models
+
 
 class BaseModel:
     """base model that defines all common attributes
@@ -34,7 +38,8 @@ class BaseModel:
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """ updates the public instance attribute updated_at with the current datetime"""
+        """ updates the public instance attribute updated_at
+        with the current datetime"""
         self.updated_at = datetime.datetime.now()
         models.storage.save()
 
