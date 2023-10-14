@@ -5,6 +5,11 @@
 
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 import cmd
 
@@ -14,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
     def do_create(self, obj):
-        """method that creates an instance of a class name\n"""
+        """method that creates an instance of a class name
         if obj:
             if obj == "BaseModel":
                 instance = BaseModel()
@@ -25,29 +30,30 @@ class HBNBCommand(cmd.Cmd):
                 print(instance.id)
                 instance.save()
         else:
-            print("** class is missing **")
+            print("** class is missing **")"""
 
-        """creates a new instance of a class 
+        """creates a new instance of a class\n"""
         if obj:
             obj_dict = {"BaseModel" : BaseModel,
                         "User" : User,
                         "State" : State,
                         "Amenity" : Amenity,
                         "Place" : Place,
-                        "Review" : Review}
+                        "Review" : Review,
+                        "City" : City}
 
             for key, value in obj_dict.items():
                 if key == obj:
                     class_obj = value
-                    break
-            if class_obj is None:
-                print("** class doesn't exist **")
-            else:
-                instance = class_obj()
-                print(instance.id)
-                instance.save()
+                    instance = class_obj()
+                    print(instance.id)
+                    instance.save()
+                    return
+            
+            print("** class doesn't exist **")
+
         else:
-            print("** class name missing **")"""
+            print("** class name missing **")
     
     def do_show(self, line):
         """prints the string representation of an instance based on the class name and id\n"""
