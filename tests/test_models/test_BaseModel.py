@@ -2,28 +2,56 @@
 
 import unittest
 import sys
-sys.path.append("models")
+import models
+from time import sleep
+from datetime import datetime
 from models.base_model import BaseModel
-
 
 
 class TestBaseModel(unittest.TestCase):
     """unittest class for BaseModel class"""
 
-    @classmethod
-    def setUpClass(cls):
-        cls.model1 = BaseModel()
-        cls.model2 = BaseModel()
-
     def test_id(self):
         """test for a uniqe id"""
+        self.model1 = BaseModel()
+        self.model2 = BaseModel()
         self.assertNotEqual(self.model1.id, self.model2.id)
     
     def test_str_method(self):
         """test for the __str__ method"""
-        self.model_repr = str(self.model1)
-        self.assertEqual(self.model_repr, "[BaseModel] (b6a6e15c-c67d-4312-9a75-9d084935e579) {'my_number': 89, 'name': 'My First Model', 'updated_at': datetime.datetime(2017, 9, 28, 21, 5, 54, 119434), 'id': 'b6a6e15c-c67d-4312-9a75-9d084935e579', 'created_at': datetime.datetime(2017, 9, 28, 21, 5, 54, 119427)}")
+        dt = datetime.today()
+        model1 = BaseModel()
+        dt_repr = repr(dt)
+        model1.id = "123456"
+        model1.created_at = model1.updated_at = dt
+        bmstr = model1.__str__()
+        self.assertIn("[BaseModel] (123456)", bmstr)
+        self.assertIn("'id': '123456'", bmstr)
+        self.assertIn("'created_at': " + dt_repr, bmstr)
+        self.assertIn("'updated_at': " + dt_repr, bmstr)
 
+    def test_two_models_different_created_at(self):
+        bm1 = BaseModel()
+        sleep(0.05)
+        bm2 = BaseModel()
+        self.assertLess(bm1.created_at, bm2.created_at)
 
-if __main__ == "__name__" :
-    unittest.main()
+    def test_two_models_different_updated_at(self):
+        bm1 = BaseModel()
+        sleep(0.05)
+        bm2 = BaseModel()
+        self.assertLess(bm1.updated_at, bm2.updated_at)
+
+    def test_save(self):
+        """test the save method"""
+        model1 = BaseModel()
+        sleep(0.05)
+        model1.save()
+        self.assertLess(model1.created_at, model1.updated_at)
+
+    def test_save_updates_file(self):
+        bm = BaseModel()
+        bm.save()
+        bmid = "BaseModel." + bm.id
+        with open("file.json", "r") as f:
+            self.assertIn(bmid, f.read())
