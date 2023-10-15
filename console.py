@@ -12,6 +12,7 @@ from models.place import Place
 from models.review import Review
 from models import storage
 import cmd
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -156,6 +157,30 @@ class HBNBCommand(cmd.Cmd):
             if instance_object.__class__.__name__ == class_n:
                 count_instance += 1
         print(count_instance)
+
+    def default(self, line):
+        """method that handels calling the command like
+           this <class name>.commnad()
+        """
+
+        names = ["BaseModel", "User", "State", "Amenity", "Place", "Review"]
+        classes = {"all": self.do_all,
+                   "count": self.do_count,
+                   "show": self.do_show,
+                   "destroy": self.do_destroy}
+
+        args = re.match(r"^(\w+)\.(\w+)\((.*)\)", line)
+        if args:
+            args = match.groups()
+        if not args or args[0] not in names:
+            super().default(line)
+            return
+
+        if args[1] in ["all", "count"]:
+            classes[args[1]](args[0])
+
+        elif args[1] in ["show", "destroy"]:
+            classes[args[1]](args[0] + ' ' + args[2])
 
     def emptyline(self):
         """print empty line\n"""
