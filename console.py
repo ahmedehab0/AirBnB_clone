@@ -171,7 +171,7 @@ class HBNBCommand(cmd.Cmd):
 
         args = re.match(r"^(\w+)\.(\w+)\((.*)\)", line)
         if args:
-            args = match.groups()
+            args = args.groups()
         if not args or args[0] not in names:
             super().default(line)
             return
