@@ -16,7 +16,7 @@ class TestBaseModel(unittest.TestCase):
         self.model1 = BaseModel()
         self.model2 = BaseModel()
         self.assertNotEqual(self.model1.id, self.model2.id)
-    
+
     def test_str_method(self):
         """test for the __str__ method"""
         dt = datetime.today()

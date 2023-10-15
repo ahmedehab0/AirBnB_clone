@@ -19,13 +19,15 @@ class BaseModel:
                         instance is updated
         """
         if kwargs:
-            date_format = "%Y-%m-%dT%H:%M:%S.%f"
+            date_form = "%Y-%m-%dT%H:%M:%S.%f"
             for key, value in kwargs.items():
-                if key != "__class__":
-                    if key in ("created_at", "updated_at"):
-                        self.__dict__[key] = datetime.datetime.strptime(value, date_format)
-                    else:
-                        self.__dict__[key] = value
+                if key in ("created_at", "updated_at"):
+                    self.__dict__[key] = datetime.datetime.strptime(value,
+                                                                    date_form)
+                elif key == "__class__":
+                    pass
+                else:
+                    self.__dict__[key] = value
 
         else:
             self.id = str(uuid.uuid4())
@@ -35,7 +37,8 @@ class BaseModel:
 
     def __str__(self):
         """return represantation of the class"""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id, self.__dict__)
 
     def save(self):
         """ updates the public instance attribute updated_at
