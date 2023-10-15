@@ -147,6 +147,16 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance[obj], argv[2], argv[3])
         storage.save()
 
+    def do_count(self, class_n):
+        """
+        Method counts instances of a certain class
+        """
+        count_instance = 0
+        for instance_object in storage.all().values():
+            if instance_object.__class__.__name__ == class_n:
+                count_instance += 1
+        print(count_instance)
+
     def emptyline(self):
         """print empty line\n"""
         pass
